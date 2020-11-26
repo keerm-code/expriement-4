@@ -139,7 +139,7 @@ Restraunt initrestraunt()
     r=fopen("order.txt","r");
     if(r==NULL)
     {
-        new 
+        
     }
 
 
