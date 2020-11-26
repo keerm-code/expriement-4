@@ -139,9 +139,16 @@ Restraunt initrestraunt()
     r=fopen("order.txt","r");
     if(r==NULL)
     {
-        new 
+        printf("THERE IS NO ORDER.");
+        fclose(r);
+        return rest;        
     }
-
+    else
+    {
+        Order orderlist;
+        getline(&temps,0,r);
+        temporder.dish
+    }
 
 }
 
