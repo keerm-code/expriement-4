@@ -139,6 +139,12 @@ Restraunt initrestraunt()
     r=fopen("order.txt","r");
     if(r==NULL)
     {
+        printf("NO ORDER EXIST!");
+        fclose(r);
+        return rest;
+    }
+    else
+    {
         
     }
 
