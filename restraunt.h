@@ -145,10 +145,8 @@ Restraunt initrestraunt()
     }
     else
     {
-        
+        Order orderlist;
+        getline(&temps,0,r);
+        temporder.dish
     }
-
-
-}
-
 
