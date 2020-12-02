@@ -2,13 +2,6 @@
 #include<stdlib.h>
 #include<vector>
 
-struct Order
-{
-    int table;
-    int *dish;
-    Order *next;
-};
-
 struct Table
 {
     int id;
@@ -23,6 +16,13 @@ struct Dish
     char *dishname;
 };
 
+struct Order
+{
+    int table;
+    std::vector<Dish> dish;
+    int pay=0;
+    Order *next;
+};
 struct Restraunt
 {
     char *name;
@@ -159,7 +159,18 @@ Restraunt initrestraunt()
                     {
                         numstring[k]=temps[j];
                     }
-                    (*temporder).dish[p++]=atoi(numstring);
+                    (*temporder).dish[p++].id=atoi(numstring);
+                }
+                for(int i=0;i<(*temporder).dish.size();i++)
+                {
+                    for(int j=0;j<rest.dish.size();j++)
+                    {
+                        if(temporder->dish[i].id==rest.dish[j].id)
+                        {
+                            temporder->dish[i]=rest.dish[j];
+                            temporder->pay=temporder->pay+rest.dish[j].price;
+                        }
+                    }
                 }
                 pushto(*temporder,orderlisthead);
             }
