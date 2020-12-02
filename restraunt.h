@@ -144,23 +144,26 @@ Restraunt initrestraunt()
         return rest;
     }
     else
-    {
-        Order *orderlist=(Order*)malloc(sizeof(Order));
-        getline(&temps,0,r);
-        (*temporder).table=atoi(temps);
-        int numstart=0;
-        char* numstring=NULL;
-        for(int i=0,p=0;temps[i]!='/0';i++)
+    {   
+        Order *orderlisthead=(Order*)malloc(sizeof(Order));
+        for(;getline(&temps,0,r)!=EOF;)
         {
-            if(temps[i]==' ')
+            (*temporder).table=atoi(temps);
+            int numstart=0;
+            char* numstring=NULL;
+            for(int i=0,p=0;temps[i]!='/0';i++)
             {
-                for(int j=numstart,k=0;j<i;j++,k++)
+                if(temps[i]==' ')
                 {
-                    numstring[k]=temps[j];
+                    for(int j=numstart,k=0;j<i;j++,k++)
+                    {
+                        numstring[k]=temps[j];
+                    }
+                    (*temporder).dish[p++]=atoi(numstring);
                 }
-                (*temporder).dish[p++]=atoi(numstring);
+                pushto(*temporder,orderlisthead);
             }
+            rest.order->next=orderlisthead;
         }
-        pushto(*temporder,orderlist);
     }
-
+}
