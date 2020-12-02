@@ -5,7 +5,7 @@
 struct Order
 {
     int table;
-    int dish[];
+    int *dish;
     Order *next;
 };
 
@@ -68,7 +68,7 @@ void pushout(Order *head)
         }
         else
         {
-            delete tempo->next;
+            free(tempo->next);
             tempo->next=NULL;
             break;
         }
@@ -78,9 +78,9 @@ void pushout(Order *head)
 Restraunt initrestraunt()
 {
     FILE *r;
-    Restraunt rest;
+    Restraunt rest;//restraunt
     Table temptable;
-    char *temps;
+    char *temps;//tempstring
     r=fopen("restraunt.txt","r");
     if(r==NULL)
     {
@@ -135,7 +135,7 @@ Restraunt initrestraunt()
         }
         fclose(r);
     }
-    ORDER:Order temporder;
+    ORDER:Order *temporder=(Order*)malloc(sizeof(Order));
     r=fopen("order.txt","r");
     if(r==NULL)
     {
@@ -145,8 +145,22 @@ Restraunt initrestraunt()
     }
     else
     {
-        Order orderlist;
+        Order *orderlist=(Order*)malloc(sizeof(Order));
         getline(&temps,0,r);
-        temporder.dish
+        (*temporder).table=atoi(temps);
+        int numstart=0;
+        char* numstring=NULL;
+        for(int i=0,p=0;temps[i]!='/0';i++)
+        {
+            if(temps[i]==' ')
+            {
+                for(int j=numstart,k=0;j<i;j++,k++)
+                {
+                    numstring[k]=temps[j];
+                }
+                (*temporder).dish[p++]=atoi(numstring);
+            }
+        }
+        pushto(*temporder,orderlist);
     }
 
