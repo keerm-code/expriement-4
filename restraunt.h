@@ -7,7 +7,7 @@ struct Table
 {
     int id;
     int sit;
-    bool istanken;
+    //bool istanken;
 };
 
 struct Dish
@@ -22,6 +22,7 @@ struct Order
     int table;
     std::vector<Dish> dish;
     int pay=0;
+    int id;
     Order *next;
 };
 struct Restraunt
@@ -91,12 +92,12 @@ bool inittables(Restraunt restraunt)
     else
     {
         for(;getline(&temps,0,r)!=EOF;)
-        {//读入顺序为编号，座位数，是否被占用
+        {//读入顺序为编号，座位数
             temptable.id=atoi(temps);
             getline(&temps,0,r);
             temptable.sit=atoi(temps);
-            getline(&temps,0,r);
-            temptable.istanken=(bool)atoi(temps);
+            //getline(&temps,0,r);
+            //temptable.istanken=(bool)atoi(temps);
             restraunt.table.push_back(temptable);
         }
         fclose(r);
@@ -136,7 +137,7 @@ bool initorders(Restraunt restraunt)
 {
     FILE *r;
     char* temps;
-    ORDER:Order *temporder=(Order*)malloc(sizeof(Order));
+    ORDER:Order *temporder=&init();
     r=fopen("order.txt","r");
     if(r==NULL)
     {
@@ -147,7 +148,7 @@ bool initorders(Restraunt restraunt)
     else
     {   
         Order *orderlisthead=(Order*)malloc(sizeof(Order));
-        for(;getline(&temps,0,r)!=EOF;)
+        for(int c=0;getline(&temps,0,r)!=EOF;c++)
         {
             (*temporder).table=atoi(temps);
             int numstart=0;
@@ -160,6 +161,7 @@ bool initorders(Restraunt restraunt)
                     {
                         numstring[k]=temps[j];
                     }
+                    numstart=i+1;
                     (*temporder).dish[p++].id=atoi(numstring);
                 }
                 for(int i=0;i<(*temporder).dish.size();i++)
@@ -173,6 +175,7 @@ bool initorders(Restraunt restraunt)
                         }
                     }
                 }
+                temporder->id=c;
                 pushto(*temporder,orderlisthead);
             }
             restraunt.order->next=orderlisthead;

@@ -1,4 +1,5 @@
-#include"restraunt.h"
+//#include"restraunt.h"
+#include"ordermanage.h"
 
 int main()
 {
@@ -17,11 +18,16 @@ int main()
             for(int i=0;i<rest.dish.size();i++)
             {
                 printf("%d\t%s\t%d",rest.dish[i].id,rest.dish[i].dishname,rest.dish[i].price);
-                printf("")
             }
+            printf("请按任意键回到主界面:");
+            system("read");
+            continue;
+        }
+        if(n==2)
+        {
+
         }
     }
-
     
     
 }

@@ -20,7 +20,7 @@ void addorder(Restraunt rest)
                 numstring[k]=temps[i];
             }
             numstart=i+1;
-            norder->dish[i].id=atoi(numstring);
+            norder->dish[i].id=atoi(numstring);//!now
         }
     }
 }
