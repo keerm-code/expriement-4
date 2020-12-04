@@ -1,6 +1,6 @@
 #include"restraunt.h"
 
-void addorder(Restraunt rest)
+bool addorder(Restraunt rest)
 {
     Order *norder=(Order*)malloc(sizeof(Order));
     printf("请输入订单号：");
@@ -23,6 +23,25 @@ void addorder(Restraunt rest)
             norder->dish[i].id=atoi(numstring);//!now
         }
     }
+    norder->pay=0;
+    bool exist=true;
+    for(int i=0,n;i<norder->dish.size()&&exist;i++)
+    {
+        for(int k=0;k<rest.dish.size();k++)
+        {
+            if(norder->dish[i].id==rest.dish[k].id)
+            {
+                n=norder->pay+rest.dish[k].price;
+            }
+        }
+        if(norder->pay<=n)
+        {
+            exist=false;
+            return false;
+        }
+    }
+    pushto(*norder,rest.order);
+    return true;
 }
 
 void deletelastorder(Order *haed)
@@ -82,8 +101,9 @@ void seedishes(Restraunt rest)
     system("read");
 }
 
-void newdish(Dish cai,Restraunt rest)
+void newdish(Restraunt rest)
 {
+    Dish cai;
     printf("请依次输入餐品编号，名称与价格,以回车为间隔\n");
     scanf("%d %s %d",&cai.id,cai.dishname,&cai.price);
     rest.dish.push_back(cai);

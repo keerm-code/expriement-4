@@ -17,7 +17,7 @@ int main()
         {
             for(int i=0;i<rest.dish.size();i++)
             {
-                printf("%d\t%s\t%d",rest.dish[i].id,rest.dish[i].dishname,rest.dish[i].price);
+                printf("%d\t%s\t%d\n",rest.dish[i].id,rest.dish[i].dishname,rest.dish[i].price);
             }
             printf("请按任意键回到主界面:");
             system("read");
@@ -25,7 +25,18 @@ int main()
         }
         if(n==2)
         {
-
+            if(addorder(rest))
+            {
+                printf("订单创建成功！");
+            }
+            else
+            {
+                puts("创建失败");
+            }
+        }
+        if(n==3)
+        {
+            printf("");//!now
         }
     }
     
