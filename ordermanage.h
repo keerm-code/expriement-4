@@ -83,7 +83,7 @@ void seeorders(Restraunt rest)
         printf("订单内容：\n");
         for(int i=0;i<rest.order->dish.size();i++)
         {
-            printf("%d  %s\n",rest.order->dish[i].id,rest.order->dish[i].dishname);
+            printf("%d  %s\n",rest.order->dish[i].id,rest.order->dish[i].dishname.c_str());
         }
     }
     printf("请按任意键退出。");
@@ -95,7 +95,7 @@ void seedishes(Restraunt rest)
     printf("本店提供的菜肴如下:\n");
     for(int i=0;i<rest.dish.size();i++)
     {
-        printf("%d\t%s\t%d\n",rest.dish[i].id,rest.dish[i].dishname,rest.dish[i].price);
+        printf("%d\t%s\t%d\n",rest.dish[i].id,rest.dish[i].dishname.c_str(),rest.dish[i].price);
     }
     printf("请按任意键返回");
     system("read");
@@ -105,7 +105,7 @@ void newdish(Restraunt rest)
 {
     Dish cai;
     printf("请依次输入餐品编号，名称与价格,以回车为间隔\n");
-    scanf("%d %s %d",&cai.id,cai.dishname,&cai.price);
+    scanf("%d %s %d",&cai.id,(cai.dishname.c_str()),&cai.price);
     rest.dish.push_back(cai);
     printf("添加完毕，输入任意键返回");
     system("read");

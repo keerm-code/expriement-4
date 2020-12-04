@@ -1,8 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<iostream>
+#include<string>
 #include<vector>
 #include<unistd.h>
+#include<fstream>
+//#include"iofclose.c"
 
+using namespace std;
 struct Table
 {
     int id;
@@ -14,7 +19,7 @@ struct Dish
 {
     int id;
     int price;
-    char *dishname;
+    std::string dishname;
 };
 
 struct Order
@@ -79,11 +84,11 @@ void pushout(Order *head)
 
 bool inittables(Restraunt restraunt)
 {
-    FILE* r;
-    char* temps;
+    fstream r;
+    string temps;
     Table temptable;
-    r=fopen("table.txt","r");
-    if(r==NULL)
+    r.open("table.txt");
+    if(!r)
     {
         printf("TABLE DON'T EXIST!\n");
         //fclose(r);
@@ -91,16 +96,17 @@ bool inittables(Restraunt restraunt)
     }
     else
     {
-        for(;getline(&temps,0,r)!=EOF;)
+        for(;!r.eof();)
         {//读入顺序为编号，座位数
-            temptable.id=atoi(temps);
-            getline(&temps,0,r);
-            temptable.sit=atoi(temps);
+            getline(r,temps);
+            temptable.id=atoi(temps.c_str());
+            getline(r,temps);
+            temptable.sit=atoi(temps.c_str());
             //getline(&temps,0,r);
             //temptable.istanken=(bool)atoi(temps);
             restraunt.table.push_back(temptable);
         }
-        fclose(r);
+        r.close();
         return true;
     }
 }
@@ -108,37 +114,39 @@ bool inittables(Restraunt restraunt)
 bool initdishes(Restraunt restraunt)
 {
     Dish tempdish;
-    FILE* r;
-    char* temps;
-    r=fopen("dish.txt","w");
-    if(r=NULL)
+    fstream fp;
+    fp.open("dish.txt");
+    string temps;
+    if(!fp)
     {
         printf("DISHES DO NOT EXIST.");
         return false;
     }
     else
     {
-        for(;getline(&temps,0,r)!=EOF;)
+        for(;!fp.eof();)
         {
+            getline(fp,temps);
             tempdish.dishname=temps;
-            getline(&temps,0,r);
-            tempdish.id=atoi(temps);
-            getline(&temps,0,r);
-            tempdish.price=atoi(temps);
+            getline(fp,temps);
+            tempdish.id=atoi(temps.c_str());
+            getline(fp,temps);
+            tempdish.price=atoi(temps.c_str());
             restraunt.dish.push_back(tempdish);
         }
-        fclose(r);
+        fp.close();
     }
     return true;
 }
 
 bool initorders(Restraunt restraunt)
 {
-    FILE *r;
-    char* temps;
+    int a;
+    fstream r;
+    string temps;
     Order *temporder=(Order*)malloc(sizeof(Order));//!bug
-    r=fopen("order.txt","w");
-    if(r==NULL)
+    r.open("order.txt");
+    if(!r)
     {
         printf("NO ORDER EXIST!");
         //fclose(r);
@@ -147,24 +155,27 @@ bool initorders(Restraunt restraunt)
     else
     {   
         Order *orderlisthead=(Order*)malloc(sizeof(Order));
-        for(int c=0;getline(&temps,0,r)!=EOF;c++)
+        for(int c=0;!r.eof();c++)
         {
-            (*temporder).table=atoi(temps);
+            getline(r,temps);
+            (*temporder).table=atoi(temps.c_str());
             int numstart=0;
-            char* numstring=NULL;
-            for(int i=0,p=0;temps[i]!='/0';i++)
+            char* numstring;
+            getline(r,temps);
+            for(int i=0,p=0;i<temps.length();i++)
             {
-                if(temps[i]==' ')
+                if(temps.c_str()[i]==' ')
                 {
                     for(int j=numstart,k=0;j<i;j++,k++)
                     {
-                        numstring[k]=temps[j];
+                        numstring[k]=temps.c_str()[j];
                     }
                     numstart=i+1;
                     (*temporder).dish[p++].id=atoi(numstring);
                 }
-                for(int i=0;i<(*temporder).dish.size();i++)
+                for(int i=0;i<temporder->dish.size();i++)
                 {
+                    a=temporder->dish.size();
                     for(int j=0;j<restraunt.dish.size();j++)
                     {
                         if(temporder->dish[i].id==restraunt.dish[j].id)
@@ -177,7 +188,7 @@ bool initorders(Restraunt restraunt)
                 temporder->id=c;
                 pushto(*temporder,orderlisthead);
             }
-            restraunt.order->next=orderlisthead;
+            orderlisthead=restraunt.order->next;
         }
     }
     return true;
@@ -189,10 +200,10 @@ Restraunt initrestraunt()
     Restraunt rest;//restraunt
     Table temptable;
     char *temps;//tempstring
-    r=fopen("restraunt.txt","r");
+    r=fopen("restraunt.txt","r+");
     if(r==NULL)
     {
-        printf("RESTRAUNT DON'T EXIST!");
+        printf("RESTRAUNT DON'T EXIST!\n");
         system("read");
         //fclose(r);
         exit(0);
@@ -210,13 +221,13 @@ Restraunt initrestraunt()
     }
     if(!initdishes(rest))
     {
-        printf("NO DISH,PLEASE CHECK YOUR FILE.");
+        printf("NO DISH,PLEASE CHECK YOUR FILE.\n");
         close=true;
     }
     if(close)
     {
-        printf("不好意思，今天本餐馆不营业,请隔日在来");
-        system("pause");
+        printf("不好意思，今天本餐馆不营业,请隔日在来\n");
+        system("read");
         exit(0);
     }
     if(!initorders(rest))

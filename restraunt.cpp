@@ -1,14 +1,16 @@
 //#include"restraunt.h"
 #include"ordermanage.h"
+//#include"stdfx.h"
 
 int main()
 {
-    FILE *fp=fopen64("key.txt","r+");
+    FILE *fp=fopen("key.txt","r+");
     char* s;
     getline(&s,0,fp);
     Restraunt rest=initrestraunt();
     int n;
     bool stop=false;
+    //fp=fopen("dish.txt","w");
     while (!stop)
     {
         printf("\n欢迎来到 %s\n。",rest.name);
@@ -20,7 +22,7 @@ int main()
         {
             for(int i=0;i<rest.dish.size();i++)
             {
-                printf("%d\t%s\t%d\n",rest.dish[i].id,rest.dish[i].dishname,rest.dish[i].price);
+                printf("%d\t%s\t%d\n",rest.dish[i].id,rest.dish[i].dishname.c_str(),rest.dish[i].price);
             }
             printf("请按任意键回到主界面:");
             system("read");
