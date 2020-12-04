@@ -137,7 +137,7 @@ bool initorders(Restraunt restraunt)
 {
     FILE *r;
     char* temps;
-    ORDER:Order *temporder=&init();
+    Order *temporder=(Order*)malloc(sizeof(Order));//!bug
     r=fopen("order.txt","r");
     if(r==NULL)
     {
