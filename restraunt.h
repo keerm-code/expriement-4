@@ -85,7 +85,7 @@ bool inittables(Restraunt restraunt)
     r=fopen("table.txt","r");
     if(r==NULL)
     {
-        printf("TABLE DON'T EXIST!");
+        printf("TABLE DON'T EXIST!\n");
         //fclose(r);
         return false;
     }
@@ -110,11 +110,10 @@ bool initdishes(Restraunt restraunt)
     Dish tempdish;
     FILE* r;
     char* temps;
-    r=fopen("dish.txt","r");
+    r=fopen("dish.txt","w");
     if(r=NULL)
     {
         printf("DISHES DO NOT EXIST.");
-        //fclose(r);
         return false;
     }
     else
@@ -138,7 +137,7 @@ bool initorders(Restraunt restraunt)
     FILE *r;
     char* temps;
     Order *temporder=(Order*)malloc(sizeof(Order));//!bug
-    r=fopen("order.txt","r");
+    r=fopen("order.txt","w");
     if(r==NULL)
     {
         printf("NO ORDER EXIST!");
@@ -181,6 +180,7 @@ bool initorders(Restraunt restraunt)
             restraunt.order->next=orderlisthead;
         }
     }
+    return true;
 }
 
 Restraunt initrestraunt()
@@ -205,7 +205,7 @@ Restraunt initrestraunt()
     bool close=false;
     if(!inittables(rest))
     {
-        printf("NO TABLE!\nPLEASE CHECK YOUR FILE.");
+        printf("NO TABLE!PLEASE CHECK YOUR FILE\n");
         close=true;
     }
     if(!initdishes(rest))
@@ -224,6 +224,7 @@ Restraunt initrestraunt()
         printf("NO ORDER.");
         return rest;
     }
+    return rest;
 }
 
 
